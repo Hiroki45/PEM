@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- يمكنك تعديل اسم المعرض هنا -->
+    <title>إنتاج الوسائل التعليمية</title>
+
+    <!-- خط Cairo من Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- ========== بداية كود CSS - أولوية للموبايل ========== -->
+    <style>
+        :root {
+            /* لوحة ألوان الثيم الغامق (نفس السابقة) */
+            --primary-color: #3498db;
+            --secondary-color: #5dade2;
+            --accent-color: #2ecc71;
+            --accent-hover-color: #28b463;
+            --background-start: #1f2937;
+            --background-end: #111827;
+            --container-bg: #1f2937;
+            --text-primary-light: #f3f4f6;
+            --text-secondary-light: #9ca3af;
+            --border-color: #4b5563;
+            --input-bg: #374151;
+            --input-focus-border: var(--primary-color);
+            --input-focus-shadow: rgba(52, 152, 219, 0.25);
+            --success-bg: #103027;
+            --success-text: #a7f3d0;
+            --success-border: #2ecc71;
+            --shadow-light: rgba(0, 0, 0, 0.2);
+            --shadow-dark: rgba(0, 0, 0, 0.3);
+        }
+
+        /* أنميشن بسيط لظهور العناصر (نفس السابق) */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ------- إعدادات الموبايل الأساسية ------- */
+        body {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
+            margin: 0;
+            /* إعطاء بعض المساحة على الجوانب بشكل افتراضي */
+            padding: 15px;
+            line-height: 1.7;
+            color: var(--text-primary-light);
+            /* لا حاجة لـ flex لتوسيط الحاوية عمودياً هنا، ستبدأ من الأعلى */
+            min-height: 100vh; /* لضمان امتداد الخلفية */
+            box-sizing: border-box;
+        }
+
+        .container {
+            /* يأخذ عرض الشاشة المتاح ناقص الحشوة الخارجية */
+            width: 100%;
+            /* يمكن استخدام max-width صغير اذا أردت مساحة بيضاء على جوانب الشاشات العريضة جداً للهاتف */
+            max-width: 500px; /* اختياري: حد أقصى للعرض لمنع التمدد المفرط */
+            margin: 20px auto; /* هامش علوي/سفلي وتوسيط أفقي إذا كان max-width مطبقاً */
+            padding: 25px; /* حشوة داخلية معقولة للموبايل */
+            background-color: var(--container-bg);
+            border-radius: 12px; /* استدارة حواف مناسبة */
+            box-shadow: 0 8px 25px var(--shadow-dark);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            animation: fadeIn 0.6s ease-out forwards;
+            overflow: hidden; /* لمنع تجاوز الظل للحدود */
+            box-sizing: border-box; /* لضمان حساب الحشوة والإطار ضمن العرض الكلي */
+        }
+
+        h1 {
+            color: var(--text-primary-light);
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 900;
+            /* حجم عنوان مناسب للموبايل */
+            font-size: 1.4rem;
+            text-shadow: 0 0 8px rgba(243, 244, 246, 0.1);
+        }
+
+        p.intro {
+            text-align: center;
+            margin-bottom: 30px; /* هامش أقل قليلاً */
+            color: var(--text-secondary-light);
+            /* حجم نص مقروء للموبايل */
+            font-size: 1em;
+        }
+
+        .form-group {
+            margin-bottom: 25px; /* مسافة بين الحقول */
+            animation: fadeIn 0.7s ease-out forwards;
+            opacity: 0;
+            animation-delay: 0.2s;
+        }
+        .form-group:nth-of-type(2) { animation-delay: 0.3s; }
+        button[type="submit"] { animation-delay: 0.5s; }
+
+        .form-group label.main-label {
+            display: block;
+            margin-bottom: 12px; /* هامش أقل */
+            font-weight: 700;
+            color: var(--primary-color);
+            /* حجم مناسب */
+            font-size: 1.1em;
+        }
+
+        /* ------- تصميم أزرار التقييم للموبايل (الأولوية) ------- */
+        .rating {
+            display: flex;
+            /* جعل الأزرار تحت بعضها البعض - مثالي للموبايل */
+            flex-direction: column;
+            /* تمديد الأزرار لتأخذ عرض الحاوية المتاح */
+            align-items: stretch;
+            gap: 10px; /* مسافة رأسية بين الأزرار */
+            border: none;
+            padding: 0; /* لا حاجة لحشوة إضافية هنا */
+            background-color: transparent;
+        }
+
+        .rating input[type="radio"] {
+            display: none;
+        }
+
+        .rating label {
+            cursor: pointer;
+            /* حشوة داخلية جيدة للمس */
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+             /* استدارة حواف أقل، تبدو أفضل عند التمدد */
+            border-radius: 8px;
+            background-color: var(--input-bg);
+            color: var(--text-secondary-light);
+            transition: all 0.30s ease-out; /* انتقال أبسط قليلاً */
+            font-weight: 700;
+            box-shadow: none; /* إزالة الظل الافتراضي */
+            /* توسيط النص داخل الزر الممتد */
+            text-align: center;
+            font-size: 1em; /* حجم خط مناسب */
+             /* إزالة أي هوامش قد تؤثر على الترتيب العمودي */
+            margin: 0;
+        }
+
+        /* تأثير مرور بسيط (قد لا يكون مهماً جداً للمس) */
+        .rating label:hover {
+            background-color: var(--border-color);
+            border-color: var(--secondary-color);
+            color: var(--text-primary-light);
+            /* لا حاجة للتحريك للأعلى في تصميم الموبايل العمودي */
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* الزر المحدد */
+        .rating input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            border-color: transparent;
+             /* ظل خفيف للتمييز */
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.2);
+            /* تأثير تغيير حجم طفيف عند الاختيار */
+            transform: scale(1.01);
+        }
+
+        /* ------- حقل النص وزر الإرسال للموبايل ------- */
+        textarea {
+            width: 100%; /* يأخذ كامل العرض المتاح */
+            padding: 12px; /* حشوة مناسبة */
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-sizing: border-box;
+            resize: vertical; /* السماح بالتغيير الرأسي فقط */
+            min-height: 90px; /* ارتفاع مبدئي جيد */
+            font-family: inherit;
+            font-size: 1em;
+            background-color: var(--input-bg);
+            color: var(--text-primary-light);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            caret-color: var(--primary-color);
+        }
+        textarea::placeholder {
+            color: var(--text-secondary-light);
+            opacity: 0.7;
+        }
+        textarea:focus {
+            border-color: var(--input-focus-border);
+            box-shadow: 0 0 0 3px var(--input-focus-shadow);
+            outline: none;
+            background-color: #2a3444;
+        }
+
+        button[type="submit"] {
+            display: block;
+            width: 100%; /* زر بعرض كامل */
+            padding: 14px 20px; /* حشوة مناسبة للمس */
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover-color));
+            color: #fff;
+            border: none;
+             /* استدارة معقولة */
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em; /* حجم خط واضح */
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.5px; /* تباعد أقل قليلاً */
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2);
+            margin-top: 15px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        button[type="submit"]:hover { /* تأثير مرور بسيط */
+            background: linear-gradient(135deg, var(--accent-hover-color), var(--accent-color));
+             /* إزالة تغيير الحجم والرفع للتركيز على البساطة */
+            transform: none;
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        button[type="submit"]:active { /* تأثير الضغط للمس */
+            transform: scale(0.98); /* ضغط طفيف */
+            box-shadow: 0 2px 8px rgba(46, 204, 113, 0.2);
+        }
+
+        /* ------- رسالة النجاح للموبايل ------- */
+        .success-message {
+            margin-top: 20px; /* مسافة مناسبة */
+            padding: 18px; /* حشوة جيدة */
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid var(--success-border);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1em; /* حجم خط مناسب */
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* ------- لا حاجة لـ @media queries للتركيز على الموبايل ------- */
+        /* بما أن التركيز على الموبايل، فإن الأنماط الأساسية مصممة له */
+        /* أي تحسينات لشاشات أكبر يمكن إضافتها داخل @media (min-width: ...) ولكن تم حذفها حسب الطلب */
+
+    </style>
+    <!-- ========== نهاية كود CSS - أولوية للموبايل ========== -->
+
+</head>
+<body>
+
+    <div class="container">
+        <h1>رأيك يهمنا في معرض <br><span style="font-size: large; color: #ffffff;">إنتاج الوسائل التعليمية</span></h1>
+        <p class="intro">نقدر وقتك! شاركنا انطباعاتك لمساعدتنا على التحسين.</p>
+
+        <form id="feedbackForm">
+            <div class="form-group">
+                <label class="main-label">ما هو انطباعك العام عن المعرض؟</label>
+                <div class="rating">
+                    <!-- العناصر لا تزال معكوسة في HTML للتوافق مع row-reverse لو تم استخدامه لاحقاً،
+                         لكن في flex-direction: column الترتيب هنا هو ترتيب الظهور الفعلي -->
+                    <input type="radio" id="rating5" name="rating" value="ممتاز" required><label for="rating5">🌟 ممتاز</label>
+                    <input type="radio" id="rating4" name="rating" value="جيد جداً"><label for="rating4">👍 جيد جداً</label>
+                    <input type="radio" id="rating3" name="rating" value="جيد"><label for="rating3">🙂 جيد</label>
+                    <input type="radio" id="rating2" name="rating" value="مقبول"><label for="rating2">🤔 مقبول</label>
+                    <input type="radio" id="rating1" name="rating" value="سيء"><label for="rating1">🙁 سيء</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="comments" class="main-label">ملاحظات أو اقتراحات؟ (اختياري)</label>
+                <textarea id="comments" name="comments" rows="4" placeholder="شاركنا أفكارك هنا..."></textarea> <!-- تقليل rows الافتراضي -->
+            </div>
+
+            <button type="submit">🚀 إرسال</button> <!-- نص أقصر للزر -->
+        </form>
+
+        <div id="successMessage" class="success-message" style="display: none;">
+            ✨ شكراً لك! تم استلام رأيك بنجاح ✨
+        </div>
+    </div>
+
+    <!-- ========== JavaScript (نفس السابق، يعمل بشكل جيد) ========== -->
+    <!-- ========== JavaScript (Updated for Google Sheets Integration) ========== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('feedbackForm');
+            const successMessage = document.getElementById('successMessage');
+            const submitButton = form.querySelector('button[type="submit"]'); // Get the button
+    
+            // !!! ================================================== !!!
+            // !!! PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE     !!!
+            // !!! ================================================== !!!
+            const googleScriptURL = 'https://script.google.com/macros/s/AKfycbwAcqO6JfJBel2Jr0ZzRYufcwHBfwPZybPQtCAQcjmTVW_K8e2w7mQRLrX-rXbSVOOE/exec';
+            // Example: const googleScriptURL = 'https://script.google.com/macros/s/AKfycby.../exec';
+            // !!! ================================================== !!!
+            // !!! --- DON'T FORGET TO REPLACE THE LINE ABOVE ---     !!!
+            // !!! ================================================== !!!
+    
+    
+            if (!googleScriptURL || googleScriptURL === 'YOUR_DEPLOYED_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+                console.error("Google Apps Script URL is not set. Form submission will not work.");
+                // Optionally disable the form or show an error to the user
+                if(submitButton) {
+                   submitButton.disabled = true;
+                   submitButton.textContent = 'خطأ في الإعداد';
+                }
+                // You could also display an error message on the page
+                // alert("خطأ في الإعداد: لم يتم تكوين رابط الإرسال. يرجى الاتصال بالمسؤول.");
+                return; // Stop further execution if URL is missing
+            }
+    
+    
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent the default form submission
+    
+                    // Disable button and show loading state
+                    if(submitButton) {
+                        submitButton.disabled = true;
+                        submitButton.textContent = '⏳ جاري الإرسال...';
+                    }
+    
+                    const formData = new FormData(form);
+    
+                    // Send data to Google Apps Script using Fetch API
+                    fetch(googleScriptURL, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json()) // Parse the JSON response from GAS
+                    .then(data => {
+                        console.log('GAS Response:', data); // Log response for debugging
+                        if (data.result === 'success') {
+                            // --- Success ---
+                            if (successMessage) {
+                                successMessage.style.display = 'block';
+                                requestAnimationFrame(() => {
+                                    successMessage.style.opacity = 1;
+                                });
+                            }
+    
+                            // Hide the form
+                            form.style.transition = 'opacity 0.5s ease-out';
+                            form.style.opacity = '0';
+                            setTimeout(() => {
+                               form.style.display = 'none';
+                            }, 500);
+    
+                            // Hide success message after a delay (optional)
+                            setTimeout(() => {
+                                if (successMessage) {
+                                    successMessage.style.transition = 'opacity 0.5s ease-out';
+                                    successMessage.style.opacity = '0';
+                                    setTimeout(() => {
+                                         successMessage.style.display = 'none';
+                                         successMessage.style.opacity = '1'; // Reset for potential future submissions (if form reappears)
+                                    }, 500);
+                                }
+                                // Optional: Reset form and re-enable button if needed for multiple submissions on same page load
+                                // form.reset();
+                                // form.style.display = 'block'; // Make form visible again
+                                // form.style.opacity = '1';
+                                // if(submitButton) {
+                                //    submitButton.disabled = false;
+                                //    submitButton.textContent = '🚀 إرسال';
+                                // }
+    
+                            }, 6000); // Keep success message for 6 seconds
+    
+                        } else {
+                            // --- Error reported by Google Apps Script ---
+                            console.error('GAS Error:', data.message, data.errorDetails);
+                            alert('حدث خطأ أثناء إرسال التقييم. الرجاء المحاولة مرة أخرى.\n(التفاصيل: ' + (data.message || 'غير معروف') + ')');
+                            // Re-enable the button on error
+                            if(submitButton) {
+                                submitButton.disabled = false;
+                                submitButton.textContent = '🚀 إرسال';
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        // --- Network error or other fetch issue ---
+                        console.error('Fetch Error:', error);
+                        alert('حدث خطأ في الشبكة أو مشكلة في الاتصال. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.');
+                        // Re-enable the button on error
+                        if(submitButton) {
+                            submitButton.disabled = false;
+                            submitButton.textContent = '🚀 إرسال';
+                        }
+                    });
+                }); // End of submit event listener
+            } // End of if (form)
+    
+            // Keep the focus/blur listeners if desired (no changes needed here)
+            const focusableElements = form ? form.querySelectorAll('input[type="radio"], textarea, button') : [];
+            focusableElements.forEach(el => {
+                el.addEventListener('focus', () => { /* Optional: Add focus styles if needed */ });
+                el.addEventListener('blur', () => { /* Optional: Remove focus styles if needed */ });
+            });
+    
+        }); // End of DOMContentLoaded
+    </script>
+  <!-- ========== نهاية كود JavaScript ========== -->    <!-- ========== نهاية كود JavaScript ========== -->
+
+</body>
+</html>
