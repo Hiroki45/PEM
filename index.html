@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- يمكنك تعديل اسم المعرض هنا -->
-    <title>إنتاج الوسائل التعليمية</title>
+    <title>رأيك في معرض إنتاج الوسائل التعليمية</title>
 
     <!-- خط Cairo من Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,6 +32,9 @@
             --success-border: #2ecc71;
             --shadow-light: rgba(0, 0, 0, 0.2);
             --shadow-dark: rgba(0, 0, 0, 0.3);
+            --error-border: #e74c3c; /* لون لحدود الخطأ */
+            --error-bg: #4f2a2a; /* خلفية خفيفة للخطأ */
+            --error-text: #f5b7b1; /* لون نص الخطأ */
         }
 
         /* أنميشن بسيط لظهور العناصر (نفس السابق) */
@@ -47,29 +49,25 @@
             direction: rtl;
             background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
             margin: 0;
-            /* إعطاء بعض المساحة على الجوانب بشكل افتراضي */
             padding: 15px;
             line-height: 1.7;
             color: var(--text-primary-light);
-            /* لا حاجة لـ flex لتوسيط الحاوية عمودياً هنا، ستبدأ من الأعلى */
-            min-height: 100vh; /* لضمان امتداد الخلفية */
+            min-height: 100vh;
             box-sizing: border-box;
         }
 
         .container {
-            /* يأخذ عرض الشاشة المتاح ناقص الحشوة الخارجية */
             width: 100%;
-            /* يمكن استخدام max-width صغير اذا أردت مساحة بيضاء على جوانب الشاشات العريضة جداً للهاتف */
-            max-width: 500px; /* اختياري: حد أقصى للعرض لمنع التمدد المفرط */
-            margin: 20px auto; /* هامش علوي/سفلي وتوسيط أفقي إذا كان max-width مطبقاً */
-            padding: 25px; /* حشوة داخلية معقولة للموبايل */
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 25px;
             background-color: var(--container-bg);
-            border-radius: 12px; /* استدارة حواف مناسبة */
+            border-radius: 12px;
             box-shadow: 0 8px 25px var(--shadow-dark);
             border: 1px solid rgba(255, 255, 255, 0.08);
             animation: fadeIn 0.6s ease-out forwards;
-            overflow: hidden; /* لمنع تجاوز الظل للحدود */
-            box-sizing: border-box; /* لضمان حساب الحشوة والإطار ضمن العرض الكلي */
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
         h1 {
@@ -77,47 +75,57 @@
             text-align: center;
             margin-bottom: 15px;
             font-weight: 900;
-            /* حجم عنوان مناسب للموبايل */
             font-size: 1.4rem;
             text-shadow: 0 0 8px rgba(243, 244, 246, 0.1);
         }
+         h1 .exhibition-name {
+            font-size: 1.1em;
+            color: #ffffff;
+            display: block;
+            margin-top: 5px;
+            font-weight: 700;
+        }
+
 
         p.intro {
             text-align: center;
-            margin-bottom: 30px; /* هامش أقل قليلاً */
+            margin-bottom: 30px;
             color: var(--text-secondary-light);
-            /* حجم نص مقروء للموبايل */
             font-size: 1em;
         }
 
         .form-group {
-            margin-bottom: 25px; /* مسافة بين الحقول */
+            margin-bottom: 25px;
             animation: fadeIn 0.7s ease-out forwards;
             opacity: 0;
-            animation-delay: 0.2s;
+            animation-delay: 0.1s;
         }
+        .form-group:nth-of-type(1) { animation-delay: 0.2s; }
         .form-group:nth-of-type(2) { animation-delay: 0.3s; }
+        .form-group:nth-of-type(3) { animation-delay: 0.4s; } /* تأخير الملاحظات */
         button[type="submit"] { animation-delay: 0.5s; }
 
         .form-group label.main-label {
             display: block;
-            margin-bottom: 12px; /* هامش أقل */
+            margin-bottom: 12px;
             font-weight: 700;
             color: var(--primary-color);
-            /* حجم مناسب */
             font-size: 1.1em;
         }
+         .form-group label.main-label .required-star {
+             color: var(--error-border); /* لون النجمة أحمر */
+             font-weight: bold;
+             margin-right: 3px; /* مسافة صغيرة قبل النجمة */
+         }
 
-        /* ------- تصميم أزرار التقييم للموبايل (الأولوية) ------- */
+        /* ------- تصميم أزرار التقييم للموبايل ------- */
         .rating {
             display: flex;
-            /* جعل الأزرار تحت بعضها البعض - مثالي للموبايل */
             flex-direction: column;
-            /* تمديد الأزرار لتأخذ عرض الحاوية المتاح */
             align-items: stretch;
-            gap: 10px; /* مسافة رأسية بين الأزرار */
+            gap: 10px;
             border: none;
-            padding: 0; /* لا حاجة لحشوة إضافية هنا */
+            padding: 0;
             background-color: transparent;
         }
 
@@ -127,53 +135,53 @@
 
         .rating label {
             cursor: pointer;
-            /* حشوة داخلية جيدة للمس */
             padding: 12px 15px;
             border: 2px solid var(--border-color);
-             /* استدارة حواف أقل، تبدو أفضل عند التمدد */
             border-radius: 8px;
             background-color: var(--input-bg);
             color: var(--text-secondary-light);
-            transition: all 0.30s ease-out; /* انتقال أبسط قليلاً */
+            transition: all 0.30s ease-out;
             font-weight: 700;
-            box-shadow: none; /* إزالة الظل الافتراضي */
-            /* توسيط النص داخل الزر الممتد */
+            box-shadow: none;
             text-align: center;
-            font-size: 1em; /* حجم خط مناسب */
-             /* إزالة أي هوامش قد تؤثر على الترتيب العمودي */
+            font-size: 1em;
             margin: 0;
         }
 
-        /* تأثير مرور بسيط (قد لا يكون مهماً جداً للمس) */
         .rating label:hover {
             background-color: var(--border-color);
             border-color: var(--secondary-color);
             color: var(--text-primary-light);
-            /* لا حاجة للتحريك للأعلى في تصميم الموبايل العمودي */
             transform: none;
             box-shadow: none;
         }
 
-        /* الزر المحدد */
         .rating input[type="radio"]:checked + label {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: #fff;
             border-color: transparent;
-             /* ظل خفيف للتمييز */
             box-shadow: 0 3px 8px rgba(52, 152, 219, 0.2);
-            /* تأثير تغيير حجم طفيف عند الاختيار */
             transform: scale(1.01);
         }
 
+        /* --- جعل حدود الحقول المطلوبة حمراء عند عدم الإدخال --- */
+         /* تحديد الحقول النصية المطلوبة الفارغة عند محاولة الإرسال (أو عند فقدان التركيز وهي فارغة) */
+        textarea:required:invalid:not(:placeholder-shown) {
+            border-color: var(--error-border) !important; /* استخدام !important لضمان الأولوية */
+            background-color: var(--error-bg);
+        }
+        /* إظهار رسالة خطأ مخصصة (يتم عبر JS) */
+
+
         /* ------- حقل النص وزر الإرسال للموبايل ------- */
         textarea {
-            width: 100%; /* يأخذ كامل العرض المتاح */
-            padding: 12px; /* حشوة مناسبة */
+            width: 100%;
+            padding: 12px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             box-sizing: border-box;
-            resize: vertical; /* السماح بالتغيير الرأسي فقط */
-            min-height: 90px; /* ارتفاع مبدئي جيد */
+            resize: vertical;
+            min-height: 90px; /* يمكن زيادة الارتفاع الأدنى للملاحظات إذا أردت */
             font-family: inherit;
             font-size: 1em;
             background-color: var(--input-bg);
@@ -194,55 +202,70 @@
 
         button[type="submit"] {
             display: block;
-            width: 100%; /* زر بعرض كامل */
-            padding: 14px 20px; /* حشوة مناسبة للمس */
+            width: 100%;
+            padding: 14px 20px;
             background: linear-gradient(135deg, var(--accent-color), var(--accent-hover-color));
             color: #fff;
             border: none;
-             /* استدارة معقولة */
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1.1em; /* حجم خط واضح */
+            font-size: 1.1em;
             font-weight: 700;
             transition: all 0.3s ease;
             font-family: inherit;
             text-transform: uppercase;
-            letter-spacing: 0.5px; /* تباعد أقل قليلاً */
+            letter-spacing: 0.5px;
             box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2);
             margin-top: 15px;
             opacity: 0;
             animation: fadeIn 0.8s ease-out forwards;
         }
+         button[type="submit"]:disabled {
+             background: #555;
+             cursor: not-allowed;
+             box-shadow: none;
+             opacity: 0.6;
+         }
 
-        button[type="submit"]:hover { /* تأثير مرور بسيط */
+        button[type="submit"]:hover:not(:disabled) {
             background: linear-gradient(135deg, var(--accent-hover-color), var(--accent-color));
-             /* إزالة تغيير الحجم والرفع للتركيز على البساطة */
             transform: none;
             box-shadow: 0 6px 15px rgba(46, 204, 113, 0.3);
         }
 
-        button[type="submit"]:active { /* تأثير الضغط للمس */
-            transform: scale(0.98); /* ضغط طفيف */
+        button[type="submit"]:active:not(:disabled) {
+            transform: scale(0.98);
             box-shadow: 0 2px 8px rgba(46, 204, 113, 0.2);
         }
 
         /* ------- رسالة النجاح للموبايل ------- */
         .success-message {
-            margin-top: 20px; /* مسافة مناسبة */
-            padding: 18px; /* حشوة جيدة */
+            margin-top: 20px;
+            padding: 18px;
             background-color: var(--success-bg);
             color: var(--success-text);
             border: 1px solid var(--success-border);
             border-radius: 8px;
             text-align: center;
             font-weight: 700;
-            font-size: 1em; /* حجم خط مناسب */
+            font-size: 1em;
             animation: fadeIn 0.5s ease forwards;
         }
 
-        /* ------- لا حاجة لـ @media queries للتركيز على الموبايل ------- */
-        /* بما أن التركيز على الموبايل، فإن الأنماط الأساسية مصممة له */
-        /* أي تحسينات لشاشات أكبر يمكن إضافتها داخل @media (min-width: ...) ولكن تم حذفها حسب الطلب */
+        /* ------- رسالة الخطأ للموبايل ------- */
+        .error-message {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid var(--error-border);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.95em;
+            display: none; /* إخفاء بشكل افتراضي */
+            animation: fadeIn 0.5s ease forwards;
+        }
 
     </style>
     <!-- ========== نهاية كود CSS - أولوية للموبايل ========== -->
@@ -251,158 +274,257 @@
 <body>
 
     <div class="container">
-        <h1>رأيك يهمنا في معرض <br><span style="font-size: large; color: #ffffff;">إنتاج الوسائل التعليمية</span></h1>
-        <p class="intro">نقدر وقتك! شاركنا انطباعاتك لمساعدتنا على التحسين.</p>
+        <h1>رأيك يهمنا في معرض <br><span class="exhibition-name">إنتاج الوسائل التعليمية</span></h1>
+        <p class="intro">نقدر وقتك في مشاركتنا رأيك في معرض الوسائل التعليمية.</p>
 
         <form id="feedbackForm">
+            <!-- السؤال الأول: التقييم العام (إجباري) -->
             <div class="form-group">
-                <label class="main-label">ما هو انطباعك العام عن المعرض؟</label>
+                <label class="main-label">
+                     ما هو انطباعك العام عن المعرض؟<span class="required-star">*</span>
+                </label>
                 <div class="rating">
-                    <!-- العناصر لا تزال معكوسة في HTML للتوافق مع row-reverse لو تم استخدامه لاحقاً،
-                         لكن في flex-direction: column الترتيب هنا هو ترتيب الظهور الفعلي -->
                     <input type="radio" id="rating5" name="rating" value="ممتاز" required><label for="rating5">🌟 ممتاز</label>
-                    <input type="radio" id="rating4" name="rating" value="جيد جداً"><label for="rating4">👍 جيد جداً</label>
-                    <input type="radio" id="rating3" name="rating" value="جيد"><label for="rating3">🙂 جيد</label>
-                    <input type="radio" id="rating2" name="rating" value="مقبول"><label for="rating2">🤔 مقبول</label>
-                    <input type="radio" id="rating1" name="rating" value="سيء"><label for="rating1">🙁 سيء</label>
+                    <input type="radio" id="rating4" name="rating" value="جيد جداً" required><label for="rating4">👍 جيد جداً</label>
+                    <input type="radio" id="rating3" name="rating" value="جيد" required><label for="rating3">🙂 جيد</label>
+                    <input type="radio" id="rating2" name="rating" value="مقبول" required><label for="rating2">🤔 مقبول</label>
+                    <input type="radio" id="rating1" name="rating" value="سيء" required><label for="rating1">🙁 سيء</label>
                 </div>
             </div>
 
+            <!-- السؤال الثاني: ماذا استفدت (إجباري) -->
             <div class="form-group">
-                <label for="comments" class="main-label">ملاحظات أو اقتراحات؟ (اختياري)</label>
-                <textarea id="comments" name="comments" rows="4" placeholder="شاركنا أفكارك هنا..."></textarea> <!-- تقليل rows الافتراضي -->
+                <label for="benefit" class="main-label">
+                    ماذا استفدت من المعرض؟<span class="required-star">*</span>
+                </label>
+                <textarea id="benefit" name="benefit" rows="4" placeholder="اذكر أهم فائدة أو معلومة جديدة اكتسبتها..." required></textarea>
             </div>
 
-            <button type="submit">🚀 إرسال</button> <!-- نص أقصر للزر -->
+            <!-- السؤال الثالث: الملاحظات (إجباري الآن) -->
+            <div class="form-group">
+                <label for="comments" class="main-label">
+                    ملاحظات أو اقتراحات إضافية؟<span class="required-star">*</span>
+                </label>
+                <textarea id="comments" name="comments" rows="3" placeholder="اكتب ملاحظاتك أو اقتراحاتك هنا..." required></textarea>
+            </div>
+
+            <button type="submit">🚀 إرسال التقييم</button>
         </form>
 
+        <!-- رسالة النجاح -->
         <div id="successMessage" class="success-message" style="display: none;">
-            ✨ شكراً لك! تم استلام رأيك بنجاح ✨
+            ✨ شكراً جزيلاً لمشاركتك! تم استلام رأيك بنجاح ✨
+        </div>
+
+        <!-- رسالة خطأ عامة -->
+        <div id="errorMessage" class="error-message" style="display: none;">
+             حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.
         </div>
     </div>
 
-    <!-- ========== JavaScript (نفس السابق، يعمل بشكل جيد) ========== -->
-    <!-- ========== JavaScript (Updated for Google Sheets Integration) ========== -->
+    <!-- ========== JavaScript (Updated for Mandatory Comments) ========== -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('feedbackForm');
             const successMessage = document.getElementById('successMessage');
-            const submitButton = form.querySelector('button[type="submit"]'); // Get the button
-    
+            const errorMessage = document.getElementById('errorMessage');
+            const submitButton = form.querySelector('button[type="submit"]');
+
             // !!! ================================================== !!!
-            // !!! PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE     !!!
+            // !!! الصق رابط تطبيق الويب الخاص بـ Google Apps Script هنا !!!
             // !!! ================================================== !!!
-            const googleScriptURL = 'https://script.google.com/macros/s/AKfycbwAcqO6JfJBel2Jr0ZzRYufcwHBfwPZybPQtCAQcjmTVW_K8e2w7mQRLrX-rXbSVOOE/exec';
-            // Example: const googleScriptURL = 'https://script.google.com/macros/s/AKfycby.../exec';
+            const googleScriptURL = 'https://script.google.com/macros/s/AKfycbwAcqO6JfJBel2Jr0ZzRYufcwHBfwPZybPQtCAQcjmTVW_K8e2w7mQRLrX-rXbSVOOE/exec'; // <--- استبدل هذا بالرابط الفعلي
+            // مثال: const googleScriptURL = 'https://script.google.com/macros/s/AKfycby.../exec';
             // !!! ================================================== !!!
-            // !!! --- DON'T FORGET TO REPLACE THE LINE ABOVE ---     !!!
+            // !!! --- لا تنس استبدال الرابط في السطر أعلاه ---       !!!
             // !!! ================================================== !!!
-    
-    
-            if (!googleScriptURL || googleScriptURL === 'YOUR_DEPLOYED_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+
+
+            if (!googleScriptURL || googleScriptURL === 'ضع_رابط_التطبيق_المنشور_هنا') {
                 console.error("Google Apps Script URL is not set. Form submission will not work.");
-                // Optionally disable the form or show an error to the user
+                if(errorMessage) {
+                     errorMessage.textContent = "خطأ في الإعداد: لم يتم تكوين رابط الإرسال. يرجى الاتصال بالمسؤول.";
+                     errorMessage.style.display = 'block';
+                }
                 if(submitButton) {
                    submitButton.disabled = true;
                    submitButton.textContent = 'خطأ في الإعداد';
                 }
-                // You could also display an error message on the page
-                // alert("خطأ في الإعداد: لم يتم تكوين رابط الإرسال. يرجى الاتصال بالمسؤول.");
-                return; // Stop further execution if URL is missing
+                if(form) {
+                    form.addEventListener('submit', (e) => e.preventDefault());
+                }
+                return;
             }
-    
-    
+
+
             if (form) {
                 form.addEventListener('submit', function(event) {
-                    event.preventDefault(); // Prevent the default form submission
-    
-                    // Disable button and show loading state
+                    event.preventDefault();
+
+                     // التحقق اليدوي الإضافي من جميع الحقول المطلوبة
+                     const ratingSelected = form.querySelector('input[name="rating"]:checked');
+                     const benefitText = form.querySelector('#benefit').value.trim();
+                     const commentsText = form.querySelector('#comments').value.trim(); // تحقق من الملاحظات
+
+                     // متغير لتتبع الأخطاء
+                     let hasError = false;
+                     let errorFields = [];
+
+                     // إعادة تعيين الأنماط قبل التحقق
+                     form.querySelectorAll('textarea:required, .rating').forEach(el => {
+                         if (el.classList.contains('rating')) {
+                             el.style.border = 'none';
+                         } else {
+                             el.style.borderColor = 'var(--border-color)';
+                             el.style.backgroundColor = 'var(--input-bg)'; // إعادة الخلفية
+                         }
+                     });
+                     if(errorMessage) errorMessage.style.display = 'none'; // إخفاء رسالة الخطأ القديمة
+
+
+                     // التحقق من كل حقل وتحديد الأخطاء
+                     if (!ratingSelected) {
+                         hasError = true;
+                         errorFields.push("التقييم العام");
+                         const ratingGroup = form.querySelector('.rating');
+                         if (ratingGroup) ratingGroup.style.border = '2px solid var(--error-border)';
+                     }
+                     if (benefitText === '') {
+                         hasError = true;
+                         errorFields.push("ماذا استفدت");
+                         const benefitTextarea = form.querySelector('#benefit');
+                         if (benefitTextarea) {
+                             benefitTextarea.style.borderColor = 'var(--error-border)';
+                             benefitTextarea.style.backgroundColor = 'var(--error-bg)';
+                         }
+                     }
+                      if (commentsText === '') { // التحقق من حقل الملاحظات
+                         hasError = true;
+                         errorFields.push("الملاحظات أو الاقتراحات");
+                         const commentsTextarea = form.querySelector('#comments');
+                         if (commentsTextarea) {
+                             commentsTextarea.style.borderColor = 'var(--error-border)';
+                             commentsTextarea.style.backgroundColor = 'var(--error-bg)';
+                         }
+                     }
+
+                     // إذا كان هناك خطأ، أظهر رسالة وأوقف الإرسال
+                     if (hasError) {
+                         if(errorMessage) {
+                             errorMessage.textContent = `يرجى ملء الحقول المطلوبة: ${errorFields.join('، ')}.`;
+                             errorMessage.style.display = 'block';
+                             // إخفاء رسالة الخطأ بعد فترة
+                             setTimeout(() => { errorMessage.style.display = 'none'; }, 6000);
+                         }
+                         // إعادة تعيين الحدود بعد فترة قصيرة (لإعطاء تلميح مرئي مؤقت)
+                        // setTimeout(() => {
+                        //      form.querySelectorAll('textarea:required, .rating').forEach(el => {
+                        //          if (el.classList.contains('rating')) {
+                        //              el.style.border = 'none';
+                        //          } else {
+                        //              el.style.borderColor = 'var(--border-color)';
+                        //              el.style.backgroundColor = 'var(--input-bg)';
+                        //          }
+                        //      });
+                        // }, 3000);
+                         return; // أوقف الإرسال
+                     }
+
+
+                    // تعطيل الزر وإظهار حالة التحميل
                     if(submitButton) {
                         submitButton.disabled = true;
                         submitButton.textContent = '⏳ جاري الإرسال...';
                     }
-    
+                    if(errorMessage) errorMessage.style.display = 'none'; // التأكد من إخفاء رسالة الخطأ
+
+
                     const formData = new FormData(form);
-    
-                    // Send data to Google Apps Script using Fetch API
+
+                    // إرسال البيانات إلى Google Apps Script
                     fetch(googleScriptURL, {
                         method: 'POST',
                         body: formData
                     })
-                    .then(response => response.json()) // Parse the JSON response from GAS
+                    .then(response => {
+                        if (!response.ok) {
+                           throw new Error(`Network response was not ok: ${response.statusText} (status: ${response.status})`);
+                        }
+                        return response.json();
+                     })
                     .then(data => {
-                        console.log('GAS Response:', data); // Log response for debugging
+                        console.log('GAS Response:', data);
                         if (data.result === 'success') {
-                            // --- Success ---
+                            // --- النجاح ---
                             if (successMessage) {
                                 successMessage.style.display = 'block';
                                 requestAnimationFrame(() => {
                                     successMessage.style.opacity = 1;
                                 });
                             }
-    
-                            // Hide the form
                             form.style.transition = 'opacity 0.5s ease-out';
                             form.style.opacity = '0';
                             setTimeout(() => {
                                form.style.display = 'none';
                             }, 500);
-    
-                            // Hide success message after a delay (optional)
+
                             setTimeout(() => {
                                 if (successMessage) {
                                     successMessage.style.transition = 'opacity 0.5s ease-out';
                                     successMessage.style.opacity = '0';
                                     setTimeout(() => {
                                          successMessage.style.display = 'none';
-                                         successMessage.style.opacity = '1'; // Reset for potential future submissions (if form reappears)
+                                         successMessage.style.opacity = '1';
                                     }, 500);
                                 }
-                                // Optional: Reset form and re-enable button if needed for multiple submissions on same page load
+                                // إعادة تعيين النموذج (اختياري)
                                 // form.reset();
-                                // form.style.display = 'block'; // Make form visible again
+                                // form.style.display = 'block';
                                 // form.style.opacity = '1';
                                 // if(submitButton) {
                                 //    submitButton.disabled = false;
-                                //    submitButton.textContent = '🚀 إرسال';
+                                //    submitButton.textContent = '🚀 إرسال التقييم';
                                 // }
-    
-                            }, 6000); // Keep success message for 6 seconds
-    
+
+                            }, 7000);
+
                         } else {
-                            // --- Error reported by Google Apps Script ---
+                            // --- خطأ من Google Apps Script ---
                             console.error('GAS Error:', data.message, data.errorDetails);
-                            alert('حدث خطأ أثناء إرسال التقييم. الرجاء المحاولة مرة أخرى.\n(التفاصيل: ' + (data.message || 'غير معروف') + ')');
-                            // Re-enable the button on error
+                            const errorMsg = `حدث خطأ أثناء إرسال التقييم: ${data.message || 'غير معروف'}.`;
+                            if(errorMessage) {
+                                errorMessage.textContent = errorMsg;
+                                errorMessage.style.display = 'block';
+                            } else {
+                                alert(errorMsg);
+                            }
                             if(submitButton) {
                                 submitButton.disabled = false;
-                                submitButton.textContent = '🚀 إرسال';
+                                submitButton.textContent = '🚀 إرسال التقييم';
                             }
                         }
                     })
                     .catch(error => {
-                        // --- Network error or other fetch issue ---
-                        console.error('Fetch Error:', error);
-                        alert('حدث خطأ في الشبكة أو مشكلة في الاتصال. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.');
-                        // Re-enable the button on error
+                        // --- خطأ في الشبكة/Fetch/JSON ---
+                        console.error('Fetch/Network Error:', error);
+                        const errorMsg = `حدث خطأ في الشبكة أو الاتصال (${error.message}). يرجى التحقق من اتصالك والمحاولة مرة أخرى.`;
+                         if(errorMessage) {
+                             errorMessage.textContent = errorMsg;
+                             errorMessage.style.display = 'block';
+                         } else {
+                              alert(errorMsg);
+                         }
                         if(submitButton) {
                             submitButton.disabled = false;
-                            submitButton.textContent = '🚀 إرسال';
+                            submitButton.textContent = '🚀 إرسال التقييم';
                         }
                     });
-                }); // End of submit event listener
-            } // End of if (form)
-    
-            // Keep the focus/blur listeners if desired (no changes needed here)
-            const focusableElements = form ? form.querySelectorAll('input[type="radio"], textarea, button') : [];
-            focusableElements.forEach(el => {
-                el.addEventListener('focus', () => { /* Optional: Add focus styles if needed */ });
-                el.addEventListener('blur', () => { /* Optional: Remove focus styles if needed */ });
-            });
-    
-        }); // End of DOMContentLoaded
+                }); // نهاية مستمع الإرسال
+            } // نهاية if (form)
+
+        }); // نهاية DOMContentLoaded
     </script>
-  <!-- ========== نهاية كود JavaScript ========== -->    <!-- ========== نهاية كود JavaScript ========== -->
+  <!-- ========== نهاية كود JavaScript ========== -->
 
 </body>
 </html>
