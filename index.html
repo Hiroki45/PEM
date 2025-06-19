@@ -516,7 +516,7 @@
         
         async function callGeminiAPI(prompt) {
             const userApiKey = localStorage.getItem('userGeminiApiKey');
-            const apiKey = userApiKey || ""; 
+            const apiKey = userApiKey || "AIzaSyD-k6ktF79zk89e-GCMP_yWVtvvUz_OS1Q"; 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
             const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
             const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
